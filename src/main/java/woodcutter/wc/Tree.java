@@ -57,8 +57,15 @@ public class Tree{
         Material ub = under.getBlock().getType();
 
         //原木の下が土系のブロックか
-        if(!(ub.equals(Material.DIRT) || ub.equals(Material.PODZOL) || ub.equals(Material.COARSE_DIRT)
-            || ub.equals(Material.GRASS_BLOCK) || ub.equals(Material.MYCELIUM))){
+        if(!(ub.equals(Material.DIRT)
+                || ub.equals(Material.PODZOL)
+                || ub.equals(Material.COARSE_DIRT)
+                || ub.equals(Material.GRASS_BLOCK)
+                || ub.equals(Material.MYCELIUM)
+                || ub.equals(Material.CRIMSON_NYLIUM)
+                || ub.equals(Material.WARPED_NYLIUM)
+                || ub.equals(Material.NETHERRACK)
+        )){
             return false;
         }
 
