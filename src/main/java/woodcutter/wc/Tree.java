@@ -15,14 +15,14 @@ import java.util.List;
 
 public class Tree{
 
-    private boolean tree;
-    private Material logType;
-    private Material leaveType;
-    private Material saplingType;
-    private int index;
-    private List<Block> treeLog = new ArrayList();
-    private List<Block> treeLeaves = new ArrayList();
-    private List<Location> firstLayerLoc = new ArrayList();
+    private final boolean tree;
+    private final Material logType;
+    private final Material leaveType;
+    private final Material saplingType;
+    private final int index;
+    private final List<Block> treeLog = new ArrayList();
+    private final List<Block> treeLeaves = new ArrayList();
+    private final List<Location> firstLayerLoc = new ArrayList();
 
     /** 木を選択するコンストラクタ
      *
@@ -156,8 +156,8 @@ public class Tree{
 
         short decrease = (short)(tool.getDurability() + (short)(value*decreaseProbability));
         if(tool.getType().getMaxDurability() == tool.getDurability()){
-            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 100, 1);
-            p.getWorld().spawnParticle(Particle.ITEM_CRACK, p.getLocation(), 40, tool);
+            p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 100, 1);
+            p.spawnParticle(Particle.ITEM_CRACK, p.getLocation(), 40, tool);
             p.getInventory().setItemInMainHand(null);
             return;
         }else if(tool.getType().getMaxDurability() < decrease){

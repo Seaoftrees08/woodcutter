@@ -8,13 +8,26 @@ import java.util.List;
 
 public class WoodUtil {
 
+    /** 木の種類
+     *  オーク -> 0
+     *  松    -> 1
+     *  白樺  -> 2
+     *  ジャングル  -> 3
+     *  アカシア    -> 4
+     *  ダークオーク -> 5
+     *  深紅の木 -> 6
+     *  歪んだ木 -> 7
+     */
+
     final static private List<Material> logs = Arrays.asList(
             Material.OAK_LOG,
             Material.SPRUCE_LOG,
             Material.BIRCH_LOG,
             Material.JUNGLE_LOG,
             Material.ACACIA_LOG,
-            Material.DARK_OAK_LOG
+            Material.DARK_OAK_LOG,
+            Material.CRIMSON_STEM,
+            Material.WARPED_STEM
     );
 
     final static private List<Material> leaves = Arrays.asList(
@@ -23,7 +36,9 @@ public class WoodUtil {
             Material.BIRCH_LEAVES,
             Material.JUNGLE_LEAVES,
             Material.ACACIA_LEAVES,
-            Material.DARK_OAK_LEAVES
+            Material.DARK_OAK_LEAVES,
+            Material.NETHER_WART_BLOCK,
+            Material.WARPED_WART_BLOCK
     );
 
     final static private List<Material> saplings = Arrays.asList(
@@ -32,7 +47,9 @@ public class WoodUtil {
             Material.BIRCH_SAPLING,
             Material.JUNGLE_SAPLING,
             Material.ACACIA_SAPLING,
-            Material.DARK_OAK_SAPLING
+            Material.DARK_OAK_SAPLING,
+            Material.CRIMSON_FUNGUS,
+            Material.WARPED_FUNGUS
     );
 
     /** Materialが原木かどうかを返す
@@ -60,12 +77,7 @@ public class WoodUtil {
     }
 
     /** woodcutterでの木の種類を返す
-     *  オーク -> 0
-     *  松    -> 1
-     *  白樺  -> 2
-     *  ジャングル  -> 3
-     *  アカシア    -> 4
-     *  ダークオーク -> 5
+     * 木の種類は上記
      *
      * @param wood 原木
      * @return woodcutterでの木の種類
