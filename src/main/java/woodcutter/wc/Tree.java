@@ -8,6 +8,8 @@ import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -20,9 +22,9 @@ public class Tree{
     private final Material leaveType;
     private final Material saplingType;
     private final int index;
-    private final List<Block> treeLog = new ArrayList();
-    private final List<Block> treeLeaves = new ArrayList();
-    private final List<Location> firstLayerLoc = new ArrayList();
+    private final List<Block> treeLog = new ArrayList<Block>();
+    private final List<Block> treeLeaves = new ArrayList<Block>();
+    private final List<Location> firstLayerLoc = new ArrayList<Location>();
 
     /** 木を選択するコンストラクタ
      *
@@ -154,8 +156,8 @@ public class Tree{
         //cf https://minecraft-ja.gamepedia.com/%E8%80%90%E4%B9%85%E5%8A%9B
         double decreaseProbability = (60.0+(40.0/(level+1.0))) / 100.0;
 
-        short decrease = (short)(tool.getDurability() + (short)(value*decreaseProbability));
-        if(tool.getType().getMaxDurability() == tool.getDurability()){
+        short decrease = (short)(durability(tool) + (short)(value*decreaseProbability));
+        if(tool.getType().getMaxDurability() == durability(tool)){
             p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 100, 1);
             p.spawnParticle(Particle.ITEM_CRACK, p.getLocation(), 40, tool);
             p.getInventory().setItemInMainHand(null);
@@ -163,7 +165,21 @@ public class Tree{
         }else if(tool.getType().getMaxDurability() < decrease){
             decrease = tool.getType().getMaxDurability();
         }
-        tool.setDurability(decrease);
+        setDurability(tool, decrease);
     }
+
+    private short durability(ItemStack item){
+        ItemMeta meta = item.getItemMeta();
+        return meta==null ? 0 : (short)((Damageable)meta).getDamage();
+    }
+
+    private void setDurability(ItemStack item, short durability){
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            ((Damageable) meta).setDamage(durability);
+            item.setItemMeta(meta);
+        }
+    }
+
 
 }

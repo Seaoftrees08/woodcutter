@@ -19,7 +19,7 @@ public class PlayerListeners implements Listener {
        main.getServer().getPluginManager().registerEvents(this, main);
     }
 
-    public static List<Player> disable = new ArrayList();
+    public static List<Player> disable = new ArrayList<Player>();
 
     @EventHandler
     public void BrockBreakEvent(BlockBreakEvent e){
