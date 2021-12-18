@@ -98,7 +98,7 @@ public class Mush {
                     if(isMushLog(b.getType())){
                         if(!mushLog.contains(b)){
                             mushLog.add(b);
-                            searchAround(center);
+                            searchAround(l);
                         }
                     }
                 }
