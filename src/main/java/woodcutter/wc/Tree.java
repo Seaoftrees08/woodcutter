@@ -17,6 +17,8 @@ import java.util.List;
 
 public class Tree{
 
+    private final int MAX_LOG_AMOUNT = 200;
+    private final int MAX_LEAVES_AMOUNT = 400;
     private final boolean tree;
     private final Material logType;
     private final Material leaveType;
@@ -85,7 +87,11 @@ public class Tree{
         boolean firstLayer = true;
 
         while (l.getBlock().getType().equals(logType)) {
-            searchAround(l, firstLayer);
+            if(tooBig()){
+                break;
+            }else{
+                searchAround(l, firstLayer);
+            }
             if(firstLayer) firstLayer = false;
             l.setY(l.getY()+1);
         }
@@ -100,7 +106,10 @@ public class Tree{
      * @param center 検査する原木の座標
      * @param firstLayer 地面に隣接している場所かどうか
      */
-    private void searchAround(Location center, boolean firstLayer){
+    private boolean searchAround(Location center, boolean firstLayer){
+        if(tooBig()){
+            return false;
+        }
         Location l = center.clone();
         Block b = l.getBlock();
 
@@ -109,9 +118,9 @@ public class Tree{
             if(firstLayer) firstLayerLoc.add(l.clone());
         }else if(b.getType().equals(leaveType)){
             if(!treeLeaves.contains(b)) treeLeaves.add(b);
-            return;
+            return true;
         }else{
-            return;
+            return true;
         }
 
         for(int h=0; h<2; h++) {
@@ -127,18 +136,22 @@ public class Tree{
                     } else if (b.getType().equals(leaveType) && !treeLeaves.contains(b)) {
                         treeLeaves.add(b);
                     }
+                    if(tooBig()) return false;
                 }
             }
             firstLayer = false;
             l.setY(center.getY()+1);
         }
+        return true;
     }
 
     /** 木を切る
      *
      * @param p 木を切ったPlayer
+     * @return 実行できたかどうか(出来ればtrue)
      */
-    public void cut(Player p){
+    public boolean cut(Player p){
+        if(tooBig()) return false;
         ItemStack tool = p.getInventory().getItemInMainHand();
         new BukkitRunnable(){
             @Override
@@ -150,6 +163,15 @@ public class Tree{
         }.run();
 
         consumption(p, treeLog.size());
+        return true;
+    }
+
+    /** 木の大きさが限度を超えているかどうか
+     *
+     * @return 木の大きさが限度を超えているか(超えていればtrue)
+     */
+    private boolean tooBig(){
+        return treeLog.size() > MAX_LOG_AMOUNT || treeLeaves.size() > MAX_LEAVES_AMOUNT;
     }
 
     /** プレイヤーの手に持っているツールの耐久値を減らす
