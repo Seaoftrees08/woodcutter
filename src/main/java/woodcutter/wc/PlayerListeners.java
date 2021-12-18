@@ -1,5 +1,6 @@
 package woodcutter.wc;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -24,9 +25,9 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void BrockBreakEvent(BlockBreakEvent e){
 
-        //壊したブロックが原木であるか
+        //壊したブロックが原木orキノコであるか
         //survival or adventure でのみ使用可
-        if(WoodUtil.isWood(e.getBlock().getType()) && !disable.contains(e.getPlayer())
+        if((WoodUtil.isWood(e.getBlock().getType()) || Mush.isMushLog(e.getBlock().getType())) && !disable.contains(e.getPlayer())
             && (e.getPlayer().getGameMode().equals(GameMode.SURVIVAL) || e.getPlayer().getGameMode().equals(GameMode.ADVENTURE))){
 
             //Can only be used if it contains the "AXE" name
@@ -34,13 +35,18 @@ public class PlayerListeners implements Listener {
             if(!its.getType().name().matches(".*" + "AXE" + ".*")) return;
 
             //select tree block
-            Tree tree = new Tree(e.getBlock());
-            if(!tree.isTree()) return;
+            if(Mush.isMushLog(e.getBlock().getType())){
+                Mush mush = new Mush(e.getBlock());
+                if(!mush.isMush()) return;
+                boolean execute = mush.cut(e.getPlayer());
+                if(!execute) e.getPlayer().sendMessage(ChatColor.RED + "[woodcutter] This tree is so big that plugin cannot cut this.");
+            }else{
+                Tree tree = new Tree(e.getBlock());
+                if(!tree.isTree()) return;
+                tree.cut(e.getPlayer());
+            }
 
             e.setCancelled(true);
-
-            //cut
-            tree.cut(e.getPlayer());
         }
     }
 }
