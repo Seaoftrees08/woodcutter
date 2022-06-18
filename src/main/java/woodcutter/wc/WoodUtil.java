@@ -17,6 +17,9 @@ public class WoodUtil {
      *  ダークオーク -> 5
      *  深紅の木 -> 6
      *  歪んだ木 -> 7
+     *  マングローブの原木 -> 8
+     *  マングローブの根 -> 9
+     *  泥だらけのマングローブの根 -> 10
      */
 
     final static private List<Material> logs = Arrays.asList(
@@ -27,7 +30,8 @@ public class WoodUtil {
             Material.ACACIA_LOG,
             Material.DARK_OAK_LOG,
             Material.CRIMSON_STEM,
-            Material.WARPED_STEM
+            Material.WARPED_STEM,
+            Material.MANGROVE_ROOTS
     );
 
     final static private List<Material> leaves = Arrays.asList(
@@ -38,7 +42,10 @@ public class WoodUtil {
             Material.ACACIA_LEAVES,
             Material.DARK_OAK_LEAVES,
             Material.NETHER_WART_BLOCK,
-            Material.WARPED_WART_BLOCK
+            Material.WARPED_WART_BLOCK,
+            Material.MANGROVE_LEAVES,
+            Material.MANGROVE_LEAVES,
+            Material.MANGROVE_LEAVES
     );
 
     final static private List<Material> saplings = Arrays.asList(
@@ -49,7 +56,10 @@ public class WoodUtil {
             Material.ACACIA_SAPLING,
             Material.DARK_OAK_SAPLING,
             Material.CRIMSON_FUNGUS,
-            Material.WARPED_FUNGUS
+            Material.WARPED_FUNGUS,
+            Material.MANGROVE_PRESSURE_PLATE,
+            Material.MANGROVE_PRESSURE_PLATE,
+            Material.MANGROVE_PRESSURE_PLATE
     );
 
     /** Materialが原木かどうかを返す
@@ -58,10 +68,11 @@ public class WoodUtil {
      * @return 原木:true 原木でない:false
      */
     public static boolean isWood(Material type){
-        for(Material m : logs){
-            if(type.equals(m)) return true;
-        }
-        return false;
+        return logs.contains(type);
+//        for(Material m : logs){
+//            if(type.equals(m)) return true;
+//        }
+//        return false;
     }
 
     /** Materialが葉かどうかを返す
@@ -70,10 +81,11 @@ public class WoodUtil {
      * @return 葉:true 葉でない:false
      */
     public static boolean isLeavses(Material type){
-        for(Material m : leaves){
-            if(type.equals(m)) return true;
-        }
-        return false;
+        return leaves.contains(type);
+//        for(Material m : leaves){
+//            if(type.equals(m)) return true;
+//        }
+//        return false;
     }
 
     /** woodcutterでの木の種類を返す
@@ -116,6 +128,26 @@ public class WoodUtil {
      */
     public static Material getSaplingMaterial(int index){
         return saplings.get(index);
+    }
+
+    /**
+     * マングローブ関連の原木かどうかを返す
+     *
+     * @param index 調べるindex
+     * @return マングローブならtrue
+     */
+    public static boolean isMangroveLog(int index){
+        return 8 <= index && index <= 10;
+    }
+
+    /**
+     * マングローブ関連の原木かどうかを返す
+     *
+     * @param material 調べるindex
+     * @return マングローブならtrue
+     */
+    public static boolean isMangroveLog(Material material){
+        return isMangroveLog(getIndex(material));
     }
 
 

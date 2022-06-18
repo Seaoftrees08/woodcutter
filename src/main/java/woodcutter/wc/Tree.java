@@ -67,12 +67,26 @@ public class Tree{
                 || ub.equals(Material.CRIMSON_NYLIUM)
                 || ub.equals(Material.WARPED_NYLIUM)
                 || ub.equals(Material.NETHERRACK)
+                || ub.equals(Material.MOSS_BLOCK)
+                || ub.equals(Material.MUD)
+                || ub.equals(Material.MUDDY_MANGROVE_ROOTS)
         )){
+            return false;
+        }else if( !(WoodUtil.isWood(b.getType()) && WoodUtil.isMangroveLog(b.getType())) ){
             return false;
         }
 
+
+
         //原木と、隣接している葉をフィールドに入れていく
-        orkLogic(b);
+        int logIndex = WoodUtil.getIndex(b.getType());
+        if(logIndex == 0){
+            orkLogic(b, 4);
+        }else if(WoodUtil.isMangroveLog(logIndex)){
+            mangroveLogic(b);
+        }else{
+            orkLogic(b, 3);
+        }
 
         //葉が原木に一つでも隣接していればTrueを返す
         return treeLeaves.size() > 0;
@@ -82,7 +96,7 @@ public class Tree{
      *
      * @param firstBlock 最初に壊したブロック  原木でなければならない
      */
-    private void orkLogic(Block firstBlock) {
+    private void orkLogic(Block firstBlock, int radius) {
         Location l = firstBlock.getLocation().clone();
         boolean firstLayer = true;
 
@@ -90,7 +104,26 @@ public class Tree{
             if(tooBig()){
                 break;
             }else{
-                searchAround(l, firstLayer);
+                searchAround(l, firstLayer, radius);
+            }
+            if(firstLayer) firstLayer = false;
+            l.setY(l.getY()+1);
+        }
+    }
+
+    /** 周囲のブロックを検査し、原木があればさらにその周りを検査する
+     *
+     * @param firstBlock 最初に壊したブロック  原木でなければならない
+     */
+    private void mangroveLogic(Block firstBlock) {
+        Location l = firstBlock.getLocation().clone();
+        boolean firstLayer = true;
+
+        while (l.getBlock().getType().equals(logType)) {
+            if(tooBig()){
+                break;
+            }else{
+                searchAroundMangrove(l, firstLayer, 4);
             }
             if(firstLayer) firstLayer = false;
             l.setY(l.getY()+1);
@@ -105,8 +138,9 @@ public class Tree{
      *
      * @param center 検査する原木の座標
      * @param firstLayer 地面に隣接している場所かどうか
+     * @param radius 探索する範囲の半径(通常3)
      */
-    private boolean searchAround(Location center, boolean firstLayer){
+    private boolean searchAround(Location center, boolean firstLayer, int radius){
         if(tooBig()){
             return false;
         }
@@ -123,16 +157,71 @@ public class Tree{
             return true;
         }
 
+        int sr = -radius + 2;
+        int er = radius - 1;
+
         for(int h=0; h<2; h++) {
-            for (int i = -1; i < 2; i++) {
-                for (int j = -1; j < 2; j++) {
+            for (int i = sr; i < er; i++) {
+                for (int j = sr; j < er; j++) {
                     l.setX(center.getX() + i);
                     l.setZ(center.getZ() + j);
                     b = l.getBlock();
 
                     if (b.getType().equals(logType) && !treeLog.contains(b)) {
                         treeLog.add(b);
-                        searchAround(l, firstLayer);
+                        searchAround(l, firstLayer, radius);
+                    } else if (b.getType().equals(leaveType) && !treeLeaves.contains(b)) {
+                        treeLeaves.add(b);
+                    }
+                    if(tooBig()) return false;
+                }
+            }
+            firstLayer = false;
+            l.setY(center.getY()+1);
+        }
+        return true;
+    }
+
+    /** ある原木の周りを検査し、原木と葉をフィールドに追加する
+     *
+     * ある原木のxy周囲8マス、y座標1増加した9増マス分を検査し
+     * 同種原木なら再帰、葉なら追加してreturnする
+     *
+     *
+     * @param center 検査する原木の座標
+     * @param firstLayer 地面に隣接している場所かどうか
+     * @param radius 探索する範囲の半径(通常3)
+     */
+    private boolean searchAroundMangrove(Location center, boolean firstLayer, int radius){
+        if(tooBig()){
+            return false;
+        }
+        Location l = center.clone();
+        Block b = l.getBlock();
+
+        if(b.getType().equals(logType)) {
+            if(!treeLog.contains(b)) treeLog.add(b);
+            if(firstLayer) firstLayerLoc.add(l.clone());
+        }else if(b.getType().equals(leaveType)){
+            if(!treeLeaves.contains(b)) treeLeaves.add(b);
+            return true;
+        }else{
+            return true;
+        }
+
+        int sr = -radius + 2;
+        int er = radius - 1;
+
+        for(int h=-1; h<-2; h--) {
+            for (int i = sr; i < er; i++) {
+                for (int j = sr; j < er; j++) {
+                    l.setX(center.getX() + i);
+                    l.setZ(center.getZ() + j);
+                    b = l.getBlock();
+
+                    if (b.getType().equals(logType) && !treeLog.contains(b)) {
+                        treeLog.add(b);
+                        searchAround(l, firstLayer, radius);
                     } else if (b.getType().equals(leaveType) && !treeLeaves.contains(b)) {
                         treeLeaves.add(b);
                     }
