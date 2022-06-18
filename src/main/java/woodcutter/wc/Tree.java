@@ -24,9 +24,9 @@ public class Tree{
     private final Material leaveType;
     private final Material saplingType;
     private final int index;
-    private final List<Block> treeLog = new ArrayList<Block>();
-    private final List<Block> treeLeaves = new ArrayList<Block>();
-    private final List<Location> firstLayerLoc = new ArrayList<Location>();
+    private final List<Block> treeLog = new ArrayList<>();
+    private final List<Block> treeLeaves = new ArrayList<>();
+    private final List<Location> firstLayerLoc = new ArrayList<>();
 
     /** 木を選択するコンストラクタ
      *
