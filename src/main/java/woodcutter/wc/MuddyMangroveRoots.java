@@ -27,7 +27,11 @@ public class MuddyMangroveRoots {
     private void mmrLogic(Block b, int transition){
         if(b.getType() != Material.MUDDY_MANGROVE_ROOTS || transition > MAX_TRANSITITION || roots.size()>MAX_AMOUNTS) return;
 
-        roots.add(b);
+        if(!roots.contains(b)){
+            roots.add(b);
+        }else{
+            return;
+        }
 
         //四方としたを追加
         mmrLogic((new Location(b.getWorld(), b.getX()+1, b.getY(), b.getZ())).getBlock(), transition+1);
@@ -35,6 +39,7 @@ public class MuddyMangroveRoots {
         mmrLogic((new Location(b.getWorld(), b.getX(), b.getY(), b.getZ()+1)).getBlock(), transition+1);
         mmrLogic((new Location(b.getWorld(), b.getX(), b.getY(), b.getZ()-1)).getBlock(), transition+1);
         mmrLogic((new Location(b.getWorld(), b.getX(), b.getY()-1, b.getZ())).getBlock(), transition);
+        mmrLogic((new Location(b.getWorld(), b.getX(), b.getY()+1, b.getZ())).getBlock(), transition);
 
     }
 
