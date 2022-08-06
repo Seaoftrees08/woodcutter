@@ -72,11 +72,9 @@ public class Tree{
                 || ub.equals(Material.MUDDY_MANGROVE_ROOTS)
         )){
             return false;
-        }else if( !(WoodUtil.isWood(b.getType()) && WoodUtil.isMangroveLog(b.getType())) ){
+        }else if( !(WoodUtil.isWood(b.getType()) || WoodUtil.isMangroveLog(b.getType())) ){
             return false;
         }
-
-
 
         //原木と、隣接している葉をフィールドに入れていく
         int logIndex = WoodUtil.getIndex(b.getType());
@@ -189,19 +187,21 @@ public class Tree{
      *
      *
      * @param center 検査する原木の座標
-     * @param firstLayer 地面に隣接している場所かどうか
-     * @param radius 探索する範囲の半径(通常3)
+     * @param firstBlock 地面に隣接している場所かどうか
+     * @param diameter 探索する範囲の直径(通常3)
      */
-    private boolean searchAroundMangrove(Location center, boolean firstLayer, int radius){
+    private boolean searchAroundMangrove(Location center, boolean firstBlock, int diameter){
+
         if(tooBig()){
             return false;
         }
         Location l = center.clone();
         Block b = l.getBlock();
 
-        if(b.getType().equals(logType)) {
+        if(WoodUtil.isMangroveWood(b.getType())) {
+            System.out.println("Add: " + b.getLocation().toVector());
             if(!treeLog.contains(b)) treeLog.add(b);
-            if(firstLayer) firstLayerLoc.add(l.clone());
+            if(firstBlock) firstLayerLoc.add(l.clone());
         }else if(b.getType().equals(leaveType)){
             if(!treeLeaves.contains(b)) treeLeaves.add(b);
             return true;
@@ -209,28 +209,26 @@ public class Tree{
             return true;
         }
 
-        int sr = -radius + 2;
-        int er = radius - 1;
-
-        for(int h=-1; h<-2; h--) {
-            for (int i = sr; i < er; i++) {
-                for (int j = sr; j < er; j++) {
-                    l.setX(center.getX() + i);
-                    l.setZ(center.getZ() + j);
+        //reamke
+        int width = diameter/2;
+        for(int yShift=-1; yShift<2; yShift++){
+            l.setY(center.getY()+yShift);
+            for(int xShift=-width; xShift<=width; xShift++){
+                for(int zShift=-width; zShift<=width; zShift++){
+                    l.setX(center.getX() + xShift);
+                    l.setZ(center.getZ() + zShift);
                     b = l.getBlock();
-
-                    if (b.getType().equals(logType) && !treeLog.contains(b)) {
+                    if (WoodUtil.isMangroveWood(b.getType()) && !treeLog.contains(b)) {
                         treeLog.add(b);
-                        searchAround(l, firstLayer, radius);
+                        searchAroundMangrove(l, false, diameter);
                     } else if (b.getType().equals(leaveType) && !treeLeaves.contains(b)) {
                         treeLeaves.add(b);
                     }
                     if(tooBig()) return false;
                 }
             }
-            firstLayer = false;
-            l.setY(center.getY()+1);
         }
+
         return true;
     }
 

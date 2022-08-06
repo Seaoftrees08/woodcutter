@@ -31,7 +31,8 @@ public class WoodUtil {
             Material.DARK_OAK_LOG,
             Material.CRIMSON_STEM,
             Material.WARPED_STEM,
-            Material.MANGROVE_ROOTS
+            Material.MANGROVE_ROOTS,
+            Material.MANGROVE_LOG
     );
 
     final static private List<Material> leaves = Arrays.asList(
@@ -43,7 +44,6 @@ public class WoodUtil {
             Material.DARK_OAK_LEAVES,
             Material.NETHER_WART_BLOCK,
             Material.WARPED_WART_BLOCK,
-            Material.MANGROVE_LEAVES,
             Material.MANGROVE_LEAVES,
             Material.MANGROVE_LEAVES
     );
@@ -57,9 +57,8 @@ public class WoodUtil {
             Material.DARK_OAK_SAPLING,
             Material.CRIMSON_FUNGUS,
             Material.WARPED_FUNGUS,
-            Material.MANGROVE_PRESSURE_PLATE,
-            Material.MANGROVE_PRESSURE_PLATE,
-            Material.MANGROVE_PRESSURE_PLATE
+            Material.MANGROVE_PROPAGULE,
+            Material.MANGROVE_PROPAGULE
     );
 
     /** Materialが原木かどうかを返す
@@ -69,10 +68,10 @@ public class WoodUtil {
      */
     public static boolean isWood(Material type){
         return logs.contains(type);
-//        for(Material m : logs){
-//            if(type.equals(m)) return true;
-//        }
-//        return false;
+    }
+
+    public static boolean isMangroveWood(Material type){
+        return type.equals(Material.MANGROVE_LOG) || type.equals(Material.MANGROVE_ROOTS);
     }
 
     /** Materialが葉かどうかを返す

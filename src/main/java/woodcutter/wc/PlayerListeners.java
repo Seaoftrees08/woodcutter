@@ -2,6 +2,7 @@ package woodcutter.wc;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,10 +26,12 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void BrockBreakEvent(BlockBreakEvent e){
 
+        //サバイバルとアドベンチャー以外除外
+        if(!e.getPlayer().getGameMode().equals(GameMode.SURVIVAL) && !e.getPlayer().getGameMode().equals(GameMode.ADVENTURE)) return;
+
         //壊したブロックが原木orキノコであるか
         //survival or adventure でのみ使用可
-        if((WoodUtil.isWood(e.getBlock().getType()) || Mush.isMushLog(e.getBlock().getType())) && !disable.contains(e.getPlayer())
-            && (e.getPlayer().getGameMode().equals(GameMode.SURVIVAL) || e.getPlayer().getGameMode().equals(GameMode.ADVENTURE))){
+        if((WoodUtil.isWood(e.getBlock().getType()) || Mush.isMushLog(e.getBlock().getType())) && !disable.contains(e.getPlayer())){
 
             //Can only be used if it contains the "AXE" name
             ItemStack its = e.getPlayer().getInventory().getItemInMainHand();
@@ -42,11 +45,22 @@ public class PlayerListeners implements Listener {
                 if(!execute) e.getPlayer().sendMessage(ChatColor.RED + "[woodcutter] This tree is so big that plugin cannot cut this.");
             }else{
                 Tree tree = new Tree(e.getBlock());
+                System.out.println("real: " + !tree.isTree());
                 if(!tree.isTree()) return;
                 tree.cut(e.getPlayer());
             }
 
             e.setCancelled(true);
+
+        //シャベルでマングローブの泥の根を破壊した時
+        }else if(e.getBlock().getType() == Material.MUDDY_MANGROVE_ROOTS && !disable.contains(e.getPlayer())){
+
+            //Can only be used if it contains the "AXE" name
+            ItemStack its = e.getPlayer().getInventory().getItemInMainHand();
+            if(!its.getType().name().matches(".*" + "SHOVEL" + ".*")) return;
+
+            System.out.println("debug: " + its.getType().name());
+
         }
     }
 }
