@@ -45,7 +45,6 @@ public class PlayerListeners implements Listener {
                 if(!execute) e.getPlayer().sendMessage(ChatColor.RED + "[woodcutter] This tree is so big that plugin cannot cut this.");
             }else{
                 Tree tree = new Tree(e.getBlock());
-                System.out.println("real: " + !tree.isTree());
                 if(!tree.isTree()) return;
                 tree.cut(e.getPlayer());
             }
@@ -59,7 +58,11 @@ public class PlayerListeners implements Listener {
             ItemStack its = e.getPlayer().getInventory().getItemInMainHand();
             if(!its.getType().name().matches(".*" + "SHOVEL" + ".*")) return;
 
-            System.out.println("debug: " + its.getType().name());
+
+            if(e.getBlock().getType().equals(Material.MUDDY_MANGROVE_ROOTS)){
+                var mmr = new MuddyMangroveRoots(e.getBlock());
+                mmr.dig(e.getPlayer());
+            }
 
         }
     }
