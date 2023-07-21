@@ -69,6 +69,7 @@ public class Tree{
                 || ub.equals(Material.NETHERRACK)
                 || ub.equals(Material.MOSS_BLOCK)
                 || ub.equals(Material.MUD)
+                || ub.equals(Material.MANGROVE_ROOTS)
                 || ub.equals(Material.MUDDY_MANGROVE_ROOTS)
         )){
             return false;

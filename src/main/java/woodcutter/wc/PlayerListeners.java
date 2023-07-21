@@ -37,19 +37,23 @@ public class PlayerListeners implements Listener {
             ItemStack its = e.getPlayer().getInventory().getItemInMainHand();
             if(!its.getType().name().matches(".*" + "AXE" + ".*")) return;
 
+            boolean execute;
+
             //select tree block
             if(Mush.isMushLog(e.getBlock().getType())){
                 Mush mush = new Mush(e.getBlock());
                 if(!mush.isMush()) return;
-                boolean execute = mush.cut(e.getPlayer());
+                execute = mush.cut(e.getPlayer());
                 if(!execute) e.getPlayer().sendMessage(ChatColor.RED + "[woodcutter] This tree is so big that plugin cannot cut this.");
+                return;
             }else{
                 Tree tree = new Tree(e.getBlock());
                 if(!tree.isTree()) return;
-                tree.cut(e.getPlayer());
+                execute = tree.cut(e.getPlayer());
+                if(!execute) e.getPlayer().sendMessage(ChatColor.RED + "[woodcutter] This tree is so big that plugin cannot cut this.");
             }
 
-            e.setCancelled(true);
+            if(execute) e.setCancelled(true);
 
         //シャベルでマングローブの泥の根を破壊した時
         }else if(e.getBlock().getType() == Material.MUDDY_MANGROVE_ROOTS && !disable.contains(e.getPlayer())){
@@ -61,7 +65,9 @@ public class PlayerListeners implements Listener {
 
             if(e.getBlock().getType().equals(Material.MUDDY_MANGROVE_ROOTS)){
                 var mmr = new MuddyMangroveRoots(e.getBlock());
-                mmr.dig(e.getPlayer());
+                if(!mmr.dig(e.getPlayer())){
+                    e.getPlayer().sendMessage(ChatColor.RED + "[woodcutter] This tree is so big that plugin cannot dig this.");
+                }
             }
 
         }
