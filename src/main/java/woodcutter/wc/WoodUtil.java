@@ -20,6 +20,7 @@ public class WoodUtil {
      *  マングローブの原木 -> 8
      *  マングローブの根 -> 9
      *  泥だらけのマングローブの根 -> 10
+     *  桜 -> 11
      */
 
     final static private List<Material> logs = Arrays.asList(

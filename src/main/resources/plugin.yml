@@ -1,7 +1,7 @@
 name: Woodcutter
 version: '${version}'
 main: woodcutter.wc.Main
-api-version: 1.18
+api-version: 1.20
 authors: [Seaoftrees08]
 description: for Wood Cutter
 
