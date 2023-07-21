@@ -33,7 +33,8 @@ public class WoodUtil {
             Material.CRIMSON_STEM,
             Material.WARPED_STEM,
             Material.MANGROVE_ROOTS,
-            Material.MANGROVE_LOG
+            Material.MANGROVE_LOG,
+            Material.CHERRY_LOG
     );
 
     final static private List<Material> leaves = Arrays.asList(
@@ -46,7 +47,8 @@ public class WoodUtil {
             Material.NETHER_WART_BLOCK,
             Material.WARPED_WART_BLOCK,
             Material.MANGROVE_LEAVES,
-            Material.MANGROVE_LEAVES
+            Material.MANGROVE_LEAVES,
+            Material.CHERRY_LEAVES
     );
 
     final static private List<Material> saplings = Arrays.asList(
@@ -59,7 +61,8 @@ public class WoodUtil {
             Material.CRIMSON_FUNGUS,
             Material.WARPED_FUNGUS,
             Material.MANGROVE_PROPAGULE,
-            Material.MANGROVE_PROPAGULE
+            Material.MANGROVE_PROPAGULE,
+            Material.CHERRY_SAPLING
     );
 
     /** Materialが原木かどうかを返す
@@ -82,10 +85,6 @@ public class WoodUtil {
      */
     public static boolean isLeavses(Material type){
         return leaves.contains(type);
-//        for(Material m : leaves){
-//            if(type.equals(m)) return true;
-//        }
-//        return false;
     }
 
     /** woodcutterでの木の種類を返す
