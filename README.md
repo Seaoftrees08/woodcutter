@@ -20,7 +20,7 @@
 `/woodcutter` もしくは `/wct` コマンドで有効と無効を切りかえることができます
 
 ## 最新Plugin要件
-Spigot 1.19, Java17
+Spigot 1.20.x, Java17
 
 ## ReleaseNote
 - 1.4.0

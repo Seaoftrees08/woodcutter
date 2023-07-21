@@ -158,6 +158,7 @@ public class Tree{
         int sr = -radius + 2;
         int er = radius - 1;
 
+
         for(int h=0; h<2; h++) {
             for (int i = sr; i < er; i++) {
                 for (int j = sr; j < er; j++) {
@@ -199,7 +200,6 @@ public class Tree{
         Block b = l.getBlock();
 
         if(WoodUtil.isMangroveWood(b.getType())) {
-            System.out.println("Add: " + b.getLocation().toVector());
             if(!treeLog.contains(b)) treeLog.add(b);
             if(firstBlock) firstLayerLoc.add(l.clone());
         }else if(b.getType().equals(leaveType)){

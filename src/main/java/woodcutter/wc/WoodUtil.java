@@ -19,49 +19,48 @@ public class WoodUtil {
      *  歪んだ木 -> 7
      *  マングローブの原木 -> 8
      *  マングローブの根 -> 9
-     *  泥だらけのマングローブの根 -> 10
-     *  桜 -> 11
+     *  桜 -> 10
      */
 
     final static private List<Material> logs = Arrays.asList(
-            Material.OAK_LOG,
+            Material.OAK_LOG,       //0
             Material.SPRUCE_LOG,
             Material.BIRCH_LOG,
             Material.JUNGLE_LOG,
-            Material.ACACIA_LOG,
+            Material.ACACIA_LOG,    //4
             Material.DARK_OAK_LOG,
             Material.CRIMSON_STEM,
             Material.WARPED_STEM,
-            Material.MANGROVE_ROOTS,
             Material.MANGROVE_LOG,
+            Material.MANGROVE_ROOTS,  //9
             Material.CHERRY_LOG
     );
 
     final static private List<Material> leaves = Arrays.asList(
-            Material.OAK_LEAVES,
+            Material.OAK_LEAVES,        //0
             Material.SPRUCE_LEAVES,
             Material.BIRCH_LEAVES,
             Material.JUNGLE_LEAVES,
-            Material.ACACIA_LEAVES,
+            Material.ACACIA_LEAVES,     //4
             Material.DARK_OAK_LEAVES,
             Material.NETHER_WART_BLOCK,
             Material.WARPED_WART_BLOCK,
             Material.MANGROVE_LEAVES,
-            Material.MANGROVE_LEAVES,
+            Material.MANGROVE_LEAVES,   //9
             Material.CHERRY_LEAVES
     );
 
     final static private List<Material> saplings = Arrays.asList(
-            Material.OAK_SAPLING,
+            Material.OAK_SAPLING,       //0
             Material.SPRUCE_SAPLING,
             Material.BIRCH_SAPLING,
             Material.JUNGLE_SAPLING,
-            Material.ACACIA_SAPLING,
+            Material.ACACIA_SAPLING,        //4
             Material.DARK_OAK_SAPLING,
             Material.CRIMSON_FUNGUS,
             Material.WARPED_FUNGUS,
             Material.MANGROVE_PROPAGULE,
-            Material.MANGROVE_PROPAGULE,
+            Material.MANGROVE_PROPAGULE,    //9
             Material.CHERRY_SAPLING
     );
 
@@ -136,7 +135,7 @@ public class WoodUtil {
      * @return マングローブならtrue
      */
     public static boolean isMangroveLog(int index){
-        return 8 <= index && index <= 10;
+        return 8 <= index && index <= 9;
     }
 
     /**
